@@ -48,8 +48,8 @@ class Handler extends ExceptionHandler
         });
     }
 
-    public function render($request, Throwable $exception)
+/*    public function render($request, Throwable $exception)
     {
         return response()->json('NOT ALLOWED');
-    }
+    }*/
 }

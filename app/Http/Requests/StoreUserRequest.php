@@ -24,7 +24,7 @@ class StoreUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'username' => 'required|unique:users,username|regex:/^([a-z])+?(-|_)([a-z])+$/i|',
+            'username' => 'required|unique:users,username',
             'first_name' => 'required',
             'last_name' => 'required',
             'birthday' => 'required|date',
@@ -35,8 +35,7 @@ class StoreUserRequest extends FormRequest
     public function messages()
     {
         return [
-          'username.regex' => 'username should contain only one word.',
-            'username.unique' => 'Cannot use username.'
+            'username.unique' => 'Invalid Registration Entries.'
         ];
     }
 }

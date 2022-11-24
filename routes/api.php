@@ -16,14 +16,17 @@ use Illuminate\Support\Facades\Route;
 */
 
 
+Route::post('register', [Controllers\AuthController::class, 'registerUser']);
+Route::post('login', [Controllers\AuthController::class, 'loginUser']);
+
 Route::group([
 
     'middleware' => 'auth:sanctum',
     'prefix' => 'auth'
 
 ], function ($router) {
-    Route::post('login', [Controllers\AuthController::class, 'loginUser']);
+
     Route::post('me', [Controllers\AuthController::class, 'me']);
-    Route::post('register', [Controllers\AuthController::class, 'registerUser']);
+
 
 });

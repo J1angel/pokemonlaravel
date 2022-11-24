@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -17,12 +18,13 @@ class AuthController extends Controller
     public function registerUser(StoreUserRequest $request)
     {
         try {
+            $validated = $request->validated();
             $user = User::create([
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'birthday' => $request->birthday,
-                'username' => $request->username,
-                'password' => Hash::make($request->password)
+                'username' => $validated['username'],
+                'first_name' => $validated['first_name'],
+                'last_name' => $validated['last_name'],
+                'birthday' => $validated['birthday'],
+                'password' => Hash::make($validated['password'])
             ]);
 
             return response()->json([
@@ -42,11 +44,10 @@ class AuthController extends Controller
     {
         $credentials = $request->only(["username","password"]);
 
-        if (!$user = auth()->attempt($credentials)) {
+        if (!Auth::attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
-
-        return $this->respondWithToken($user);
+        return $this->respondWithToken(auth()->user());
     }
 
     protected function respondWithToken($user)
