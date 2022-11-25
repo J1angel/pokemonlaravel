@@ -26,7 +26,7 @@ class PokemonController extends Controller
             ]);
             return response()->json([
                 'message' => 'You like '.$validated['pokemon_name'].'!'
-            ],500);
+            ]);
         }else if ($liked <= 3){
               Likers::create([
                   'user_id' => auth()->user()->id,
@@ -56,7 +56,7 @@ class PokemonController extends Controller
             ]);
             return response()->json([
                 'message' => 'You hate '.$validated['pokemon_name'].'!'
-            ],500);
+            ]);
         }else if($hated <= 3){
             Haters::create([
                 'user_id' => auth()->user()->id,
