@@ -1,6 +1,5 @@
 <?php
 use App\Http\Controllers;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 
@@ -28,5 +27,6 @@ Route::group([
 
     Route::post('me', [Controllers\AuthController::class, 'me']);
 
-
+    Route::post('pokemonlike', [Controllers\PokemonController::class, 'pokemonLike']);
+    Route::post('pokemonhate', [Controllers\PokemonController::class, 'pokemonHate']);
 });
