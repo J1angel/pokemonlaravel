@@ -25,7 +25,7 @@ class PokemonController extends Controller
                 'image_link' => $validated['image_link'],
             ]);
             return response()->json([
-                'message' => 'You like .'.$validated['pokemon_name'].'!'
+                'message' => 'You like '.$validated['pokemon_name'].'!'
             ],500);
         }else if ($liked <= 3){
               Likers::create([
@@ -55,7 +55,7 @@ class PokemonController extends Controller
                 'image_link' => $validated['image_link'],
             ]);
             return response()->json([
-                'message' => 'You hate.'.$validated['pokemon_name'].'!'
+                'message' => 'You hate '.$validated['pokemon_name'].'!'
             ],500);
         }else if($hated <= 3){
             Haters::create([
