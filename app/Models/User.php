@@ -42,4 +42,15 @@ class User extends Authenticatable
     protected $casts = [
         'birthday' => 'date',
     ];
+
+    public function likers()
+    {
+        return $this->hasMany('App\Models\Likers');
+    }
+
+    public function haters()
+    {
+        return $this->hasMany('App\Models\Haters');
+    }
+
 }

@@ -15,4 +15,9 @@ class Haters extends Model
         'image_link',
     ];
 
+    public function user_info()
+    {
+        return $this->hasOne('App\Models\User', 'id', 'user_id');
+    }
+
 }

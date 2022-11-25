@@ -29,4 +29,6 @@ Route::group([
 
     Route::post('pokemonlike', [Controllers\PokemonController::class, 'pokemonLike']);
     Route::post('pokemonhate', [Controllers\PokemonController::class, 'pokemonHate']);
+
+    Route::get('getuserreaction', [Controllers\PokemonController::class, 'getUserReactions']);
 });

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LikeHateRequest;
+use App\Models\Haters;
 use App\Models\Likers;
+use App\Models\User;
 
 class PokemonController extends Controller
 {
@@ -22,8 +24,7 @@ class PokemonController extends Controller
                 'pokemon_name' => $validated['pokemon_name'],
                 'image_link' => $validated['image_link'],
             ]);
-        }else{
-          if ($liked <= 3){
+        }else if ($liked <= 3){
               Likers::create([
                   'user_id' => auth()->user()->id,
                   'pokemon_name' => $validated['pokemon_name'],
@@ -31,13 +32,10 @@ class PokemonController extends Controller
               ]);
           }else{
               return response()->json([
-                  'message' => 'You have liked 3 Pokemons already.'
+                  'message' => 'You already liked this Pokemon or you have more than 3 liked pokemon.'
               ],500);
           }
-            return response()->json([
-                'message' => 'You already liked this Pokemon.'
-            ],500);
-        }
+
 
 
 
@@ -45,29 +43,31 @@ class PokemonController extends Controller
 
     public function pokemonHate(LikeHateRequest $request){
         $validated = $request->validated();
-        $hate_pokemon = Likers::where([['user_id', auth()->user()->id],['pokemon_name',$validated['pokemon_name']],['image_link',$validated['image_link']]])->first();
-        $hated = Likers::where('user_id', auth()->user()->id)->count();
+        $hate_pokemon = Haters::where([['user_id', auth()->user()->id],['pokemon_name',$validated['pokemon_name']],['image_link',$validated['image_link']]])->first();
+        $hated = Haters::where('user_id', auth()->user()->id)->count();
         if ($hate_pokemon === null){
-            Likers::create([
+            Haters::create([
+                'user_id' => auth()->user()->id,
+                'pokemon_name' => $validated['pokemon_name'],
+                'image_link' => $validated['image_link'],
+            ]);
+        }else if($hated <= 3){
+            Haters::create([
                 'user_id' => auth()->user()->id,
                 'pokemon_name' => $validated['pokemon_name'],
                 'image_link' => $validated['image_link'],
             ]);
         }else{
-            if ($hated <= 3){
-                Likers::create([
-                    'user_id' => auth()->user()->id,
-                    'pokemon_name' => $validated['pokemon_name'],
-                    'image_link' => $validated['image_link'],
-                ]);
-            }else{
-                return response()->json([
-                    'message' => 'You have hated 3 Pokemons already.'
-                ],500);
-            }
             return response()->json([
-                'message' => 'You already hated this Pokemon.'
+                'message' => 'You already hated this Pokemon or you have more than 3 hated pokemon.'
             ],500);
         }
+    }
+
+    public function getUserReactions(){
+        $user_reactions_like = User::with('likers','haters')
+            ->paginate(50);
+
+        return response()->json($user_reactions_like);
     }
 }
